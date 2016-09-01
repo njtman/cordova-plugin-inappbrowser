@@ -118,6 +118,7 @@ instance, or the system browser.
     iOS only:
 
     - __closebuttoncaption__: set to a string to use as the __Done__ button's caption. Note that you need to localize this value yourself.
+    - __hideclosebutton__: set to `yes` (default is `no`) to hide the __Done__ button. This will prevent the user from dismissing the InAppBrowser window.
     - __disallowoverscroll__: Set to `yes` or `no` (default is `no`). Turns on/off the UIWebViewBounce property.
     - __hidden__: set to `yes` to create the browser and load the page, but not show it. The loadstop event fires when loading is complete. Omit or set to `no` (default) to have the browser open and load normally.
     - __clearcache__: set to `yes` to have the browser's cookie cache cleared before the new window is opened
