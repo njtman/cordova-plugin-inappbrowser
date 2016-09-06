@@ -164,6 +164,9 @@
     if (browserOptions.closebuttoncaption != nil) {
         [self.inAppBrowserViewController setCloseButtonTitle:browserOptions.closebuttoncaption];
     }
+    if (browserOptions.hideclosebutton) {
+        [self.inAppBrowserViewController hideCloseButton];
+    }
     // Set Presentation Style
     UIModalPresentationStyle presentationStyle = UIModalPresentationFullScreen; // default
     if (browserOptions.presentationstyle != nil) {
@@ -651,6 +654,13 @@
     [self.toolbar setItems:items];
 }
 
+- (void)hideCloseButton
+{
+    NSMutableArray* items = [self.toolbar.items mutableCopy];
+    [items removeObjectAtIndex:0];
+    [self.toolbar setItems:items];
+}
+
 - (void)showLocationBar:(BOOL)show
 {
     CGRect locationbarFrame = self.addressLabel.frame;
@@ -966,6 +976,7 @@
         self.location = YES;
         self.toolbar = YES;
         self.closebuttoncaption = nil;
+        self.hideclosebutton = NO;
         self.toolbarposition = kInAppBrowserToolbarBarPositionBottom;
         self.clearcache = NO;
         self.clearsessioncache = NO;
