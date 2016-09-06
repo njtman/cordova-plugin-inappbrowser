@@ -54,6 +54,7 @@
 @property (nonatomic, assign) BOOL clearcache;
 @property (nonatomic, assign) BOOL clearsessioncache;
 @property (nonatomic, copy) NSString* statusbarcolor;
+@property (nonatomic, copy) NSString* statusbarstyle;
 
 @property (nonatomic, copy) NSString* presentationstyle;
 @property (nonatomic, copy) NSString* transitionstyle;

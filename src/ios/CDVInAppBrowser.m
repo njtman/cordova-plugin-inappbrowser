@@ -203,15 +203,15 @@
     }
 
     if (browserOptions.statusbarcolor) {
-        NSArray *rgbColor = [browserOptions.statusbarcolor componentsSeparatedByString:@"|"];
+        unsigned int rgbValue = 0;
+        NSScanner* scanner = [NSScanner scannerWithString:browserOptions.statusbarcolor];
+        [scanner setScanLocation:1];
+        [scanner scanHexInt:&rgbValue];
 
         @try {
-            CGFloat redColor = (CGFloat)[rgbColor[0] floatValue];
-            CGFloat greenColor = (CGFloat)[rgbColor[1] floatValue];
-            CGFloat blueColor = (CGFloat)[rgbColor[2] floatValue];
-            self.statusbarColor = [UIColor colorWithRed:redColor/255.0f green:greenColor/255.0f blue:blueColor/255.0f alpha:1.0];
+            self.statusbarColor = [UIColor colorWithRed:((rgbValue & 0xFF0000) >> 16)/255.0 green:((rgbValue & 0xFF00) >> 8)/255.0 blue:(rgbValue & 0xFF)/255.0 alpha:1.0];
         } @catch (NSException *e) {
-            NSLog(@"The InAppBrowser statusbarcolor value only accepts RGB values formatted as RRR|GGG|BBB");
+            NSLog(@"The InAppBrowser statusbarcolor value only accepts a hex color value: #RRGGBB");
         }
     }
 
@@ -787,7 +787,14 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleDefault;
+    NSString* lcStatusBarStyle = [_browserOptions.statusbarstyle lowercaseString];
+
+    if ([lcStatusBarStyle isEqualToString:@"lightcontent"]) {
+        return UIStatusBarStyleLightContent;
+    } else {
+        return UIStatusBarStyleDefault;
+
+    }
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -1038,6 +1045,7 @@
     for (id subview in self.view.subviews) {
         if ([[subview class] isSubclassOfClass:[UIToolbar class]]) {
             ((UIToolbar*)subview).barTintColor = color;
+            ((UIToolbar*)subview).translucent = NO;
         }
     }
 }
