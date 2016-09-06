@@ -777,7 +777,14 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleDefault;
+    NSString* lcStatusBarStyle = [_browserOptions.statusbarstyle lowercaseString];
+
+    if ([lcStatusBarStyle isEqualToString:@"lightcontent"]) {
+        return UIStatusBarStyleLightContent;
+    } else {
+        return UIStatusBarStyleDefault;
+
+    }
 }
 
 - (BOOL)prefersStatusBarHidden {
