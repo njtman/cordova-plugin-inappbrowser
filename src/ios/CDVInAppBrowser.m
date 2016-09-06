@@ -199,6 +199,19 @@
         }
     }
 
+    if (browserOptions.statusbarcolor) {
+        NSArray *rgbColor = [browserOptions.statusbarcolor componentsSeparatedByString:@"|"];
+
+        @try {
+            CGFloat redColor = (CGFloat)[rgbColor[0] floatValue];
+            CGFloat greenColor = (CGFloat)[rgbColor[1] floatValue];
+            CGFloat blueColor = (CGFloat)[rgbColor[2] floatValue];
+            self.statusbarColor = [UIColor colorWithRed:redColor/255.0f green:greenColor/255.0f blue:blueColor/255.0f alpha:1.0];
+        } @catch (NSException *e) {
+            NSLog(@"The InAppBrowser statusbarcolor value only accepts RGB values formatted as RRR|GGG|BBB");
+        }
+    }
+
     // UIWebView options
     self.inAppBrowserViewController.webView.scalesPageToFit = browserOptions.enableviewportscale;
     self.inAppBrowserViewController.webView.mediaPlaybackRequiresUserAction = browserOptions.mediaplaybackrequiresuseraction;
@@ -229,6 +242,7 @@
 
     __block CDVInAppBrowserNavigationController* nav = [[CDVInAppBrowserNavigationController alloc]
                                    initWithRootViewController:self.inAppBrowserViewController];
+    nav.statusbarColor = self.statusbarColor;
     nav.orientationDelegate = self.inAppBrowserViewController;
     nav.navigationBarHidden = YES;
     nav.modalPresentationStyle = self.inAppBrowserViewController.modalPresentationStyle;
@@ -1008,6 +1022,14 @@
 @end
 
 @implementation CDVInAppBrowserNavigationController : UINavigationController
+
+- (void) setStatusbarColor:(UIColor*)color {
+    for (id subview in self.view.subviews) {
+        if ([[subview class] isSubclassOfClass:[UIToolbar class]]) {
+            ((UIToolbar*)subview).barTintColor = color;
+        }
+    }
+}
 
 - (void) dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion {
     if ( self.presentedViewController) {
