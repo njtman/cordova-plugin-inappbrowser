@@ -1027,6 +1027,7 @@
     for (id subview in self.view.subviews) {
         if ([[subview class] isSubclassOfClass:[UIToolbar class]]) {
             ((UIToolbar*)subview).barTintColor = color;
+            ((UIToolbar*)subview).translucent = NO;
         }
     }
 }
